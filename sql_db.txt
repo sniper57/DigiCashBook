@@ -1,0 +1,98 @@
+-- users
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  password_hash VARCHAR(255),
+  role ENUM('admin','manager','user') DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- books
+CREATE TABLE books (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  name VARCHAR(100),
+  opening_balance DECIMAL(12,2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- book_users
+CREATE TABLE book_users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  book_id INT,
+  user_id INT,
+  role_level ENUM('owner','editor','viewer')
+);
+
+-- transactions
+CREATE TABLE transactions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  book_id INT,
+  type ENUM('cashin','cashout'),
+  amount DECIMAL(12,2),
+  date DATETIME,
+  description TEXT,
+  created_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE admin_logs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  admin_id INT,
+  action_type VARCHAR(50),
+  target_user_id INT,
+  details TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  type ENUM('cashin','cashout') NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE transaction_attachments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  transaction_id INT,
+  file_name VARCHAR(255),
+  file_type ENUM('image', 'pdf'),
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE transaction_modes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL
+);
+
+ALTER TABLE transactions ADD COLUMN mode_id INT DEFAULT NULL;
+
+ALTER TABLE transactions ADD COLUMN category_id INT AFTER amount;
+
+
+ALTER TABLE users ADD COLUMN default_book_id INT DEFAULT NULL;
+
+
+ALTER TABLE users
+  ADD COLUMN reset_token VARCHAR(100) DEFAULT NULL,
+  ADD COLUMN reset_token_expires DATETIME DEFAULT NULL;
+
+ALTER TABLE book_users
+  ADD COLUMN invited_email VARCHAR(100) NULL AFTER user_id,
+  ADD COLUMN status ENUM('active','pending','revoked') DEFAULT 'active' AFTER role_level,
+  ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER status;
+
+
+
+-----
+
+//<---- Audit Logging
+  $_Audit_Action = ''; //-- SAVE/UPDATE/DELETE
+  $_Audit_ModuleName = ''; //-- Transaction/User
+  $_Audit_PrimaryKey = 0;//-- PrimaryKey ID of the Data
+  $_Audit_Comment = '';// -- SAVE/UPDATE/DELETE - Description of Data
+  log_admin_action($_SESSION['user_id'], $_Audit_Action . ' ' .  $_Audit_ModuleName, $_Audit_PrimaryKey, $_Audit_Comment);
+  //---->
