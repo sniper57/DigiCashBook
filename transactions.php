@@ -270,7 +270,7 @@ foreach ($transactions as $row) {
     </div>
 
     <!-- Floating Action Bar & Toasts (same as your code) -->
-    <div class="fab-bar" <?= ($shared_books[0]['role_level'] == 'owner' || $shared_books[0]['role_level'] == 'editor' ? '' : 'hidden') ?> 
+    <div class="fab-bar" <?= ($shared_books[0]['role_level'] == 'owner' || $shared_books[0]['role_level'] == 'editor' ? '' : 'hidden') ?> >
         <button class="btn btn-success" onclick="openAddModal('cashin')">
             <i class="fa fa-plus"></i> CASH IN
         </button>
