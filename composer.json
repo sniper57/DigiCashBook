@@ -1,7 +1,13 @@
 {
+    "config": {
+        "platform": {
+            "php": "7.4.33"
+        }
+    },
     "require": {
-        "phpoffice/phpspreadsheet": "^4.4",
-        "intervention/image": "^3.11",
-        "phpmailer/phpmailer": "^6.10"
+        "php": "^7.4",
+        "phpmailer/phpmailer": "^6.5",
+        "phpoffice/phpspreadsheet": "^1.25",
+        "intervention/image": "^2.7"
     }
 }
