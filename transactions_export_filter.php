@@ -272,10 +272,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['export_xlsx']) && !em
                             <thead class="thead-light">
                                 <tr>
                                     <th>TYPE</th>
-                                    <th>MODE_ID</th>
+                                    <th>PAYMENT MODE</th>
                                     <th>AMOUNT</th>
                                     <th>DESCRIPTION</th>
-                                    <th>DATE</th>
+                                    <th>DATE (Y-M-D)</th>
                                 </tr>
                             </thead>
                             <tbody>
