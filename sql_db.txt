@@ -85,14 +85,3 @@ ALTER TABLE book_users
   ADD COLUMN status ENUM('active','pending','revoked') DEFAULT 'active' AFTER role_level,
   ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER status;
 
-
-
------
-
-//<---- Audit Logging
-  $_Audit_Action = ''; //-- SAVE/UPDATE/DELETE
-  $_Audit_ModuleName = ''; //-- Transaction/User
-  $_Audit_PrimaryKey = 0;//-- PrimaryKey ID of the Data
-  $_Audit_Comment = '';// -- SAVE/UPDATE/DELETE - Description of Data
-  log_admin_action($_SESSION['user_id'], $_Audit_Action . ' ' .  $_Audit_ModuleName, $_Audit_PrimaryKey, $_Audit_Comment);
-  //---->
