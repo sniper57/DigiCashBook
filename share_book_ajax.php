@@ -1,6 +1,6 @@
 <?php
 require_once 'db_connect.php';
-include 'pwd.php';
+include 'pwdx.php';
 session_start();
 
 $action = $_REQUEST['action'] ?? '';
