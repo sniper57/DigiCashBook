@@ -1,5 +1,0 @@
-<?php
-
-$pwd='Incorrect57.';
-
-?>
