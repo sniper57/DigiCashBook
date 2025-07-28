@@ -363,5 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #CustomFiles
-forgot_password.php
-share_book_ajax.php
+pwdx.php

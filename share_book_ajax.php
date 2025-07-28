@@ -1,5 +1,6 @@
 <?php
 require_once 'db_connect.php';
+include 'pwd.php';
 session_start();
 
 $action = $_REQUEST['action'] ?? '';
@@ -56,7 +57,7 @@ if ($action=='invite') {
             $mail->Host = 'sg2plzcpnl506710.prod.sin2.secureserver.net';    // Must be GoDaddy host name
 			$mail->SMTPAuth = true;
 			$mail->Username = "notifications@theweddingdaystory.com"; /*Substitute with your real email*/
-			$mail->Password = "xxxxxxxx"; /*Substitute with your real password*/
+			$mail->Password = $pwd; /*Substitute with your real password*/
 			$mail->SMTPSecure = 'tls';   // ssl will no longer work on GoDaddy CPanel SMTP
 			$mail->Port = 587;    // Must use port 587 with TLS
 
