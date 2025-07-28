@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $link = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' .
                 $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset_password.php?token=$token";
 
-        // PHPMailer config
+        // PHPMailer config  
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
