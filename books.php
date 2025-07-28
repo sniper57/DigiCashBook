@@ -117,86 +117,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
   <title>My Books</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Extra Styling for Card Effect (add in your <style> or main CSS file) -->
+    <style>
+    .book-card {
+      background: #f7f8f4 !important;
+      border-radius: 2rem !important;
+      box-shadow: 0 6px 24px #0001;
+      border: none;
+    }
+    </style>
+
 </head>
+
+
 <body>
-<div class="container mt-4">
-  <h4>My Cashbooks</h4>
+<div class="container my-4" <?= (count($owned_books) == 0? "hidden" : "") ?>>
+   <h2 class="mb-4 font-weight-bold" style="font-size:2rem;">My Books</h2>
 
-  <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addBookModal">+ Add Book</button>
+    <button class="btn btn-success mb-3 btn-block" data-toggle="modal" data-target="#addBookModal">+ Add Book</button>
 
-  <h5>📘 Owned Books</h5>
-  <table class="table table-bordered">
-    <thead><tr><th>Name</th><th>Opening Balance</th><th>Current Balance</th><th>Created At</th><th>Actions</th></tr></thead>
-    <tbody>
+    <div class="input-group mb-4">
+      <input type="text" class="form-control form-control-lg rounded-pill" placeholder="Search Book..." id="searchBook" style="font-weight:700; background:#f3f3f0; border:none;">
+      <div class="input-group-append">
+        <span class="input-group-text bg-transparent border-0" style="margin-left:-48px;"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
 
+    <!-- LOOP HERE -->
 
-        <?php foreach ($owned_books as $book):
-
-            $book_id = $book['id'];
-            $opening_balance = floatval($book['opening_balance']);
-
-            // Compute running balance: opening_balance + all cashin - all cashout
-            $bal_stmt = $conn->prepare("SELECT
-                SUM(CASE WHEN type = 'cashin' THEN amount ELSE 0 END) as total_in,
-                SUM(CASE WHEN type = 'cashout' THEN amount ELSE 0 END) as total_out
-                FROM transactions WHERE book_id = ?");
-            $bal_stmt->bind_param("i", $book_id);
-            $bal_stmt->execute();
-            $bal = $bal_stmt->get_result()->fetch_assoc();
-
-            $total_in = floatval($bal['total_in']);
-            $total_out = floatval($bal['total_out']);
-
-            $current_balance = $opening_balance + $total_in - $total_out;
-            $created_at = $book['created_at'] ? date("M d, Y h:i A", strtotime($book['created_at'])) : '-';
-
-        ?>
-
-      <tr>
-        <td><?= htmlspecialchars($book['name']) ?></td>
-        <td>₱<?= number_format($book['opening_balance'], 2) ?></td>
-        <td>₱<?php echo number_format($current_balance, 2) ?> </td>
-        <td><?php echo htmlspecialchars($created_at) ?></td>
-        <td>
-          <a href="transactions.php?book_id=<?= $book['id'] ?>" class="btn btn-sm btn-primary mt-1">
-              📂 Open</a>
-          <a href="ledger.php?book_id=<?= $book['id'] ?>" class="btn btn-sm btn-success mt-1">
-              📒 Ledger
-          </a>
-            <a href="transactions_export.php?book_id=<?=intval($book['id'])?>" class="btn   btn-sm btn-warning mt-1">
-                ⬇️ Export
-            </a>
-          <button class="btn btn-sm btn-info btn-edit mt-1"
-                  data-id="<?= $book['id'] ?>"
-                  data-name="<?= htmlspecialchars($book['name']) ?>"
-                  data-balance="<?= $book['opening_balance'] ?>">
-              ✎ Edit</button>
-          <button class="btn btn-sm btn-danger btn-delete mt-1" data-id="<?= $book['id'] ?>">
-              ❌ Delete
-          </button>
-            <!-- Add this Share button: -->
-            <?php if($book['role_level'] == 'owner'): ?>
-            <button class="btn btn-secondary btn-sm share-btn mt-1"
-                data-book-id="<?=$book['id']?>"
-                data-book-name="<?=htmlspecialchars($book['name'])?>">
-                🤝 Share
-            </button>
-            <?php endif; ?>
-        </td>
-      </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
-
-<!-- SHARED BOOKS -->
-<h5>🤝 Shared Books</h5>
-  <table class="table table-bordered">
-    <thead><tr><th>Name</th><th>Opening Balance</th><th>Current Balance</th><th>Created At</th><th>Actions</th></tr></thead>
-    <tbody>
-
-
-        <?php foreach ($shared_books as $book):
+     <?php foreach ($owned_books as $book):
 
                   $book_id = $book['id'];
                   $opening_balance = floatval($book['opening_balance']);
@@ -216,32 +169,128 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   $current_balance = $opening_balance + $total_in - $total_out;
                   $created_at = $book['created_at'] ? date("M d, Y h:i A", strtotime($book['created_at'])) : '-';
 
-        ?>
+     ?>
 
-      <tr>
-        <td><?= htmlspecialchars($book['name']) . '</br><small><i>('. $book['role_level'] .')</i></small>' ?></td>
-        <td>₱<?= number_format($book['opening_balance'], 2) ?></td>
-        <td>₱<?php echo number_format($current_balance, 2) ?> </td>
-        <td><?php echo htmlspecialchars($created_at) ?></td>
-        <td>
-          <a href="transactions.php?book_id=<?= $book['id'] ?>" class="btn btn-sm btn-primary mt-1">
-              📂 Open</a>
-          <a href="ledger.php?book_id=<?= $book['id'] ?>" class="btn btn-sm btn-success mt-1">
-              📒 Ledger
-          </a>
-            <a href="transactions_export.php?book_id=<?=intval($book['id'])?>" class="btn   btn-sm btn-warning mt-1">
-                ⬇️ Export
-            </a>
-          <button <?= ($book['role_level'] == 'editor' ? '' : 'hidden') ?> class="btn btn-sm btn-info btn-edit mt-1"
-                  data-id="<?= $book['id'] ?>"
-                  data-name="<?= htmlspecialchars($book['name']) ?>"
-                  data-balance="<?= $book['opening_balance'] ?>">
-              ✎ Edit</button>
-        </td>
-      </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+
+        <!-- Book Card Start -->
+      <div class="container-fluid book-card bg-light rounded shadow-sm mb-4 p-4 align-items-md-center">
+          <div class="row">
+              <div class="col-6">
+                  <div class="font-weight-bold" style="font-size:1.5rem; letter-spacing:-.5px;"><?= htmlspecialchars($book['name']) ?></div>
+                  <div class="mt-2 text-dark" style="font-size:1rem;">(<?php echo htmlspecialchars($created_at) ?>)</div>
+              </div>
+              <div class="col-6 text-md-right">
+                  <div style="font-size:1rem; color:#111;">(Opening Balance: ₱<?= number_format($book['opening_balance'], 2) ?>)</div>
+                  <div style="font-size:1.5rem; color:#19be7a; font-weight:600;">₱<?php echo number_format($current_balance, 2) ?></div>
+              </div>
+          </div>
+          </br>
+          <div class="row">
+              <div class="col-lg-12 row">
+                  <div class="col-lg-2 col-sm-6 pb-1">
+                      <a href="transactions.php?book_id=<?= $book['id'] ?>" class="btn btn-primary btn-xs btn-block ml-1 mr-2">📂</br>Open</a>
+                  </div>
+                   <div class="col-lg-2 col-sm-6 pb-1">
+                      <a href="ledger.php?book_id=<?= $book['id'] ?>" class="btn btn-success btn-xs btn-block ml-1 mr-2">📒</br>Ledger</a>
+                  </div>
+                   <div class="col-lg-2 col-sm-6 pb-1">
+                      <a href="transactions_export.php?book_id=<?=intval($book['id'])?>" class="btn btn-warning btn-xs btn-block ml-1 mr-2">⬇️</br>Export</a>
+                  </div>
+                   <div class="col-lg-2 col-sm-6 pb-1">
+                      <button class="btn btn-info btn-xs btn-block ml-1 mr-2" data-id="<?= $book['id'] ?>"
+                      data-name="<?= htmlspecialchars($book['name']) ?>" data-balance="<?= $book['opening_balance'] ?>" >✎</br>Edit</button>
+                  </div>
+                   <div class="col-lg-2 col-sm-6 pb-1">
+                      <button class="btn btn-danger btn-xs btn-block ml-1 mr-2" data-id="<?= $book['id'] ?>">❌</br>Delete</button>
+                  </div>
+                   <div class="col-lg-2 col-sm-6 pb-1">
+                      <button class="btn btn-secondary btn-xs btn-block ml-1 mr-2 share-btn" data-book-id="<?=$book['id']?>"
+                       data-book-name="<?=htmlspecialchars($book['name'])?>">🤝</br>Share</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Book Card End -->
+    <!-- END LOOP -->
+    <?php endforeach; ?>
+
+
+
+  
+<!-- SHARED BOOKS -->
+<div class="container my-4 mb-5" <?= (count($shared_books) == 0? "hidden" : "") ?>>
+   <h2 class="mb-4 font-weight-bold" style="font-size:2rem;">🤝 Shared Books</h2>
+
+    <div class="input-group mb-4">
+      <input type="text" class="form-control form-control-lg rounded-pill" placeholder="Search Shared Book..." id="searchShareBook" style="font-weight:700; background:#f3f3f0; border:none;">
+      <div class="input-group-append">
+        <span class="input-group-text bg-transparent border-0" style="margin-left:-48px;"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+
+     <!-- LOOP SHARED HERE -->
+
+     <?php foreach ($shared_books as $book):
+
+                  $book_id = $book['id'];
+                  $opening_balance = floatval($book['opening_balance']);
+
+                  // Compute running balance: opening_balance + all cashin - all cashout
+                  $bal_stmt = $conn->prepare("SELECT
+                SUM(CASE WHEN type = 'cashin' THEN amount ELSE 0 END) as total_in,
+                SUM(CASE WHEN type = 'cashout' THEN amount ELSE 0 END) as total_out
+                FROM transactions WHERE book_id = ?");
+                  $bal_stmt->bind_param("i", $book_id);
+                  $bal_stmt->execute();
+                  $bal = $bal_stmt->get_result()->fetch_assoc();
+
+                  $total_in = floatval($bal['total_in']);
+                  $total_out = floatval($bal['total_out']);
+
+                  $current_balance = $opening_balance + $total_in - $total_out;
+                  $created_at = $book['created_at'] ? date("M d, Y h:i A", strtotime($book['created_at'])) : '-';
+
+     ?>
+
+      <!-- Book Card Start -->
+      <div class="container-fluid book-card bg-light rounded shadow-sm mb-4 p-4 align-items-md-center">
+          <div class="row">
+               <div class="col-6">
+                  <div class="font-weight-bold" style="font-size:1.5rem; letter-spacing:-.5px;"><?= htmlspecialchars($book['name']) ?></div>
+                  <div class="mt-2 text-dark" style="font-size:1rem;">(<?php echo htmlspecialchars($created_at) ?>)</div>
+              </div>
+              <div class="col-6 text-md-right">
+                  <div style="font-size:1rem; color:#111;">(Opening Balance: ₱<?= number_format($book['opening_balance'], 2) ?>)</div>
+                  <div style="font-size:1.5rem; color:#19be7a; font-weight:600;">₱<?php echo number_format($current_balance, 2) ?></div>
+              </div>
+          </div>
+          </br>
+          <div class="row">
+              <div class="col-lg-12 row">
+                  <div class="<?= ($book['role_level'] == 'editor' ? 'col-lg-3 col-sm-6 pb-1' : 'col-4 col-sm-6 pb-1') ?>">
+                      <a href="transactions.php?book_id=<?= $book['id'] ?>" class="btn btn-primary btn-xs btn-block ml-1 mr-2">📂</br>Open</a>
+                  </div>
+                  <div class="<?= ($book['role_level'] == 'editor' ? 'col-lg-3 col-sm-6 pb-1' : 'col-4 col-sm-6 pb-1') ?>">
+                      <a href="ledger.php?book_id=<?= $book['id'] ?>" class="btn btn-success btn-xs btn-block ml-1 mr-2">📒</br>Ledger</a>
+                  </div>
+                  <div class="<?= ($book['role_level'] == 'editor' ? 'col-lg-3 col-sm-6 pb-1' : 'col-4 col-sm-6 pb-1') ?>">
+                      <a href="transactions_export.php?book_id=<?=intval($book['id'])?>" class="btn btn-warning btn-xs btn-block ml-1 mr-2">⬇️</br>Export</a>
+                  </div>
+                  <div class="<?= ($book['role_level'] == 'editor' ? 'col-lg-3 col-sm-6 pb-1' : 'col-4 col-sm-6 pb-1') ?>" <?= ($book['role_level'] == 'editor' ? '' : 'hidden') ?>>
+                      <button class="btn btn-info btn-xs btn-block ml-1 mr-2" data-id="<?= $book['id'] ?>"
+                      data-name="<?= htmlspecialchars($book['name']) ?>" data-balance="<?= $book['opening_balance'] ?>" >✎</br>Edit</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Book Card End -->
+    <!-- END SHARED LOOP -->
+
+    <?php endforeach; ?>
+
+
 </div>
 
 <!-- SHARE BOOK MODAL -->
@@ -312,6 +361,20 @@ $('.share-btn').click(function(){
     loadShares(bookId);
     $('#inviteMsg').html('');
     $('#shareBookModal').modal('show');
+});
+
+
+$('#searchBook, #searchShareBook').on('input', function() {
+    var query = $(this).val().toLowerCase().trim();
+    $('.book-card').each(function() {
+        // Search book title and section (edit as needed for your data)
+        var title = $(this).find('.font-weight-bold').first().text().toLowerCase();
+        if(title.indexOf(query) !== -1) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
 });
 
 function loadShares(bookId) {
