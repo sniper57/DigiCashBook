@@ -2,9 +2,9 @@ I created this simple Cash Management App to quickly monitor your IN and OUT exp
 Created in Simple PHP Codes and MYSQL.
 PSP: I did not use any framework since this is part of my learning drive towards PHP coding, so don't judge :)
 
-
-
 You can freely Fork my work. its Free!
+
+<img width="1365" height="594" alt="image" src="https://github.com/user-attachments/assets/c8dd9d92-c7a9-4d65-a4d9-417235d09353" />
 
 # 📱 DigiCashBook
 
