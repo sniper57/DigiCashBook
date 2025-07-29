@@ -88,44 +88,44 @@ composer install
 **F. Access in your browser**
 - Go to ```http://localhost/digicashbook``` (or your deployment URL)
 
-### 📖 Usage
-# **Books:** Add cashbooks for different businesses or wallets
-# **Transactions:** Add cash-in/out, attach receipts, and categorize
-# **Ledger:** See detailed logs and running balances
-# **Reports:** View analytics and download/export data
-# **Import/Export:** Use Excel template for fast migration or backups
-# **User Management:** Admins can add/edit users, assign roles, or reset passwords
-# **Book Sharing:** Use the "Share" button to collaborate securely
+## 📖 Usage
+- **Books:** Add cashbooks for different businesses or wallets
+- **Transactions:** Add cash-in/out, attach receipts, and categorize
+- **Ledger:** See detailed logs and running balances
+- **Reports:** View analytics and download/export data
+- **Import/Export:** Use Excel template for fast migration or backups
+- **User Management:** Admins can add/edit users, assign roles, or reset passwords
+- **Book Sharing:** Use the "Share" button to collaborate securely
 
 
-### 🔒 Security Best Practices
+## 🔒 Security Best Practices
 - Passwords are stored hashed (bcrypt)
 - All file uploads are sanitized and restricted by type and size
 - Audit logs track all admin/user actions
 - Roles control access to sensitive pages
 
-### 📱 Mobile-First UI
-## All key pages are designed for single-handed use on smartphones:
+## 📱 Mobile-First UI
+### All key pages are designed for single-handed use on smartphones:
 
 - Floating add buttons
 - Card-based data display
 - Touch-friendly filters and modals
 
-### 🛠️ Customization & Extensibility
+## 🛠️ Customization & Extensibility
 - All UI built with Bootstrap 4/5 + custom CSS
 - Modular PHP codebase for easy modification
 - Add your own modules: eg. budgeting, invoicing, recurring transactions, etc.
 
-### 🙌 Credits
+## 🙌 Credits
 - **PHPMailer** for robust email support
 - **PhpSpreadsheet** for Excel import/export
 - **Intervention Image** for file/image processing
 - **Font Awesome** for icons
 
-### 📝 License
+## 📝 License
 Open-source under the MIT License.
 
-### 🤝 Contributing
+## 🤝 Contributing
 - Pull requests and suggestions welcome!
 - Please submit issues and feature requests on the GitHub Issues page.
 
