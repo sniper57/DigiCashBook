@@ -134,7 +134,7 @@ foreach ($transactions as $row) {
 
     /* Attachments Modal */
     .modal-body .att-thumb { margin: 0 10px 10px 0; display: inline-block; vertical-align: top; }
-    .modal-body img { max-width: 120px; max-height: 100px; border-radius: 7px; margin-bottom: 5px; cursor: pointer; }
+    .modal-body img { max-width: 33.3vw; max-height: 100%; border-radius: 7px; margin-bottom: 5px; cursor: pointer; }
     .modal-body .att-file { font-size: 1.1rem; }
     /* Image Viewer */
     .image-viewer-modal .modal-dialog { max-width: 98vw; }
@@ -411,13 +411,13 @@ $('#add_attachments').on('change', function() {
     if (file.type.startsWith('image/')) {
       const url = URL.createObjectURL(file);
       html = `<div class="mr-2 mb-2 position-relative">
-        <img src="${url}" style="max-width:90px;max-height:70px;border-radius:5px;"/>
-        <span class="remove-att position-absolute bg-danger text-white rounded-circle" style="top:-8px;right:-8px;cursor:pointer;" data-idx="${idx}">&times;</span>
+        <img src="${url}" style="max-width:33.3vw;max-height:100%;border-radius:5px;padding-top: 5px; padding-right: 5px;"/>
+        <span class="remove-att position-absolute bg-danger text-white rounded-circle" style="width: 20px;text-align: center;top:-8px;right:-8px;cursor:pointer;" data-idx="${idx}">&times;</span>
       </div>`;
     } else if (file.type === 'application/pdf') {
       html = `<div class="mr-2 mb-2 position-relative">
         <i class="fa fa-file-pdf fa-2x text-danger"></i> ${file.name}
-        <span class="remove-att position-absolute bg-danger text-white rounded-circle" style="top:-8px;right:-8px;cursor:pointer;" data-idx="${idx}">&times;</span>
+        <span class="remove-att position-absolute bg-danger text-white rounded-circle" style="width: 20px;text-align: center;top:-8px;right:-8px;cursor:pointer;" data-idx="${idx}">&times;</span>
       </div>`;
     }
     preview.append(html);
