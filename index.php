@@ -3,27 +3,32 @@ require_once 'db_connect.php';
 session_start();
 
 $msg = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $remember = isset($_POST['remember']);
-
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? OR name=? LIMIT 1");
-    $stmt->bind_param("ss", $username, $username);
-    $stmt->execute();
-    $user = $stmt->get_result()->fetch_assoc();
-
-    if ($user && password_verify($password, $user['password_hash'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
-        $_SESSION['user_email'] = $user['email'];
-        $_SESSION['user_role'] = $user['role'];
-        // "Remember me" (optional: implement real cookie for persistent login)
-        header('Location: dashboard.php');
-        exit;
-    } else {
-        $msg = "Invalid credentials.";
+if (isset(trim($_POST['username'])) && isset($_POST['password'])){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username = trim($_POST['username'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $remember = isset($_POST['remember']);
+    
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email=? OR name=? LIMIT 1");
+        $stmt->bind_param("ss", $username, $username);
+        $stmt->execute();
+        $user = $stmt->get_result()->fetch_assoc();
+    
+        if ($user && password_verify($password, $user['password_hash'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_role'] = $user['role'];
+            // "Remember me" (optional: implement real cookie for persistent login)
+            header('Location: dashboard.php');
+            exit;
+        } else {
+            $msg = "Invalid credentials.";
+        }
     }
+}
+else{
+    $msg = "Enter Username/Passwordd.";
 }
 ?>
 
