@@ -146,12 +146,12 @@ if(empty($cat_labels)) {
 
         .dashboard-actions { display: flex; gap: 16px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
         .dashboard-actions .btn { min-width: 160px; }
-        .dashboard-section { display: flex; gap: 16px; flex-wrap: wrap;}
+        /*.dashboard-section { display: flex; gap: 16px; flex-wrap: wrap;}*/
         .dashboard-chart-card, .dashboard-pie-card {
             background: #fff; border-radius: 14px; box-shadow: 0 2px 12px #0001; padding: 17px 16px 15px 16px;
         }
-        .dashboard-chart-card { flex: 2 1 420px; min-width: 320px; }
-        .dashboard-pie-card { flex: 1 1 320px; min-width: 280px; }
+        .dashboard-chart-card { flex: 2 1 420px; min-width: 320px; min-height: 140px; max-height: 300px; }
+        .dashboard-pie-card { flex: 1 1 320px; min-width: 280px; min-height: 140px; max-height: 300px; }
         .dashboard-bottom-row { display: flex; gap: 16px; margin-top: 16px;}
         .dashboard-bottom-left, .dashboard-bottom-right { background: #fff; border-radius: 14px; box-shadow: 0 2px 12px #0001; padding: 17px 16px 15px 16px; min-height: 320px; }
         .dashboard-bottom-left { flex: 2 1 420px; }
@@ -209,10 +209,10 @@ if(empty($cat_labels)) {
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <!-- Line Chart -->
-                <div class="dashboard-chart-card flex-fill mb-4">
-                    <div class="card-title font-weight-bold mb-3"><i class="fa fa-chart-line mr-2"></i>Cash Flow (current month)</div>
-                    <canvas id="cashFlowChart" height="140"></canvas>
-                </div>
+            <div class="dashboard-chart-card flex-fill mb-4">
+                <div class="card-title font-weight-bold mb-3"><i class="fa fa-chart-line mr-2"></i>Cash Flow (current month)</div>
+                <canvas id="cashFlowChart" height="140"></canvas>
+            </div>
             </div>
             
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -263,7 +263,7 @@ const cashFlowChart = new Chart(ctx, {
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         scales: {
             yAxes: [{
                 ticks: { beginAtZero: true, fontSize: 13 }
@@ -297,6 +297,7 @@ const expensePieChart = new Chart(ctxPie, {
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         legend: { display: true, position: 'right', labels: { fontSize: 14 } }
     }
 });
