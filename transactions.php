@@ -284,7 +284,7 @@ foreach ($transactions as $row) {
             <i class="fa fa-plus"></i> CASH IN
         </button>
         <span class="mid-fab">
-            <a href="dashboard.php"><i class="fa fa-home"></i></a>
+            <a href="dashboard.php" style="color: #fff !important"><i class="fa fa-home"></i></a>
         </span>
         <button class="btn btn-danger" onclick="openAddModal('cashout')">
             <i class="fa fa-minus"></i> CASH OUT
