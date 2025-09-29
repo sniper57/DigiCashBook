@@ -3,7 +3,7 @@ require_once 'db_connect.php';
 session_start();
 
 $msg = '';
-if (isset(trim($_POST['username'])) && isset($_POST['password'])){
+if ((isset($_POST['username'])) && (isset($_POST['password']))){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
@@ -28,7 +28,7 @@ if (isset(trim($_POST['username'])) && isset($_POST['password'])){
     }
 }
 else{
-    $msg = "Enter Username/Passwordd.";
+    $msg = "Enter Username/Password.";
 }
 ?>
 
