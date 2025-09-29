@@ -145,7 +145,7 @@ foreach ($transactions as $row) {
     }
     .image-viewer-controls button { background: #000c; color: #fff; border: none; font-size: 2.5rem; padding: 0 16px; pointer-events: auto; }
     .pdf-embed { width: 100%; height: 78vh; border: none; background: #eee; }
-    .day-total { display:flex; justify-content:flex-end; align-items:baseline; gap:10px; padding: 0 8px 12px; margin-top:-30px; }
+    .day-total { display:flex; justify-content:flex-end; align-items:baseline; gap:10px; padding: 0 8px 12px; margin-top:-29px; }
     .day-total-label { color:#666; font-weight:600; }
     .day-total-amt { font-weight:700; font-size:1.25rem; }
     @media (max-width:600px){ .day-total-amt{font-size:1.15rem;} }
@@ -284,7 +284,7 @@ foreach ($transactions as $row) {
             <i class="fa fa-plus"></i> CASH IN
         </button>
         <span class="mid-fab">
-            <a href="dashboard.php"></a><i class="fa fa-home"></i></a>
+            <a href="dashboard.php"><i class="fa fa-home"></i></a>
         </span>
         <button class="btn btn-danger" onclick="openAddModal('cashout')">
             <i class="fa fa-minus"></i> CASH OUT
