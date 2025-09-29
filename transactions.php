@@ -68,7 +68,7 @@ foreach ($transactions as $row) {
     }
     .summary-card .net { font-size: 2rem; font-weight: bold; letter-spacing: .02em;}
     .summary-card .label { color: #888; }
-    .summary-card .in { color: #27ae60; font-weight: 500;}
+    .summary-card .in, .day-total-amt { color: #27ae60; font-weight: 500;}
     .summary-card .out { color: #e74c3c; font-weight: 500;}
     .summary-card .reports-link { color: #2352f6; font-weight: 600; display: inline-block; margin-top: 8px; text-decoration: none;}
     .summary-card .reports-link i { margin-left: 2px;}
@@ -145,6 +145,10 @@ foreach ($transactions as $row) {
     }
     .image-viewer-controls button { background: #000c; color: #fff; border: none; font-size: 2.5rem; padding: 0 16px; pointer-events: auto; }
     .pdf-embed { width: 100%; height: 78vh; border: none; background: #eee; }
+    .day-total { display:flex; justify-content:flex-end; align-items:baseline; gap:10px; padding: 0 8px 12px; margin-top:-30px; }
+    .day-total-label { color:#666; font-weight:600; }
+    .day-total-amt { font-weight:700; font-size:1.25rem; }
+    @media (max-width:600px){ .day-total-amt{font-size:1.15rem;} }
     </style>
 </head>
 <body>
@@ -175,8 +179,12 @@ foreach ($transactions as $row) {
         <!-- TRANSACTIONS LIST -->
         <div class="trans-list">
             <?php foreach ($grouped as $date => $rows): ?>
-            <div class="date-header"><?= date('d F Y', strtotime($date)) ?></div>
-            <?php foreach ($rows as $row): ?>
+            <?php $day_total = 0; ?>
+            <div class="date-header">
+                <span class="pull-left"><?= date('d F Y', strtotime($date)) ?></span>
+                <span class="day-total pull-right">Total: <span class="day-total-amt"><?= number_format(array_sum(array_column($rows,'amount')),2) ?></span></span>
+            </div>
+            <?php foreach ($rows as $row): $day_total += (float)$row['amount']; ?>
             <?php
                       $att_stmt = $conn->prepare("SELECT * FROM transaction_attachments WHERE transaction_id = ?");
                       $att_stmt->bind_param("i", $row['id']);
@@ -228,6 +236,7 @@ foreach ($transactions as $row) {
                 </div>
             </div>
             <?php endforeach; ?>
+            
             <?php endforeach; ?>
         </div>
     </div>
@@ -275,7 +284,7 @@ foreach ($transactions as $row) {
             <i class="fa fa-plus"></i> CASH IN
         </button>
         <span class="mid-fab">
-            <i class="fa fa-refresh fa-spin"></i>
+            <a href="dashboard.php"></a><i class="fa fa-home"></i></a>
         </span>
         <button class="btn btn-danger" onclick="openAddModal('cashout')">
             <i class="fa fa-minus"></i> CASH OUT
