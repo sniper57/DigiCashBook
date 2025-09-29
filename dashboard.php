@@ -206,16 +206,25 @@ if(empty($cat_labels)) {
 
     <!-- Main Charts Section -->
     <div class="dashboard-section">
-        <!-- Line Chart -->
-        <div class="dashboard-chart-card flex-fill mb-4">
-            <div class="card-title font-weight-bold mb-3"><i class="fa fa-chart-line mr-2"></i>Cash Flow (current month)</div>
-            <canvas id="cashFlowChart" height="140"></canvas>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <!-- Line Chart -->
+                <div class="flex-fill mb-4">
+                    <div class="card-title font-weight-bold mb-3"><i class="fa fa-chart-line mr-2"></i>Cash Flow (current month)</div>
+                    <canvas id="cashFlowChart" height="140"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <!-- Pie Chart -->
+                <div class="flex-fill mb-4">
+                    <div class="card-title font-weight-bold mb-3"><i class="fa fa-chart-pie mr-2"></i>Expense Breakdown</div>
+                    <canvas id="expensePieChart" height="140"></canvas>
+                </div>
+            </div>
         </div>
-        <!-- Pie Chart -->
-        <div class="dashboard-pie-card flex-fill mb-4">
-            <div class="card-title font-weight-bold mb-3"><i class="fa fa-chart-pie mr-2"></i>Expense Breakdown</div>
-            <canvas id="expensePieChart" height="140"></canvas>
-        </div>
+        
+        
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
