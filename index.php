@@ -19,6 +19,7 @@ if ((isset($_POST['username'])) && (isset($_POST['password']))){
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_role'] = $user['role'];
+            $_SESSION['default_book_id'] = $user['default_book_id'];
             // "Remember me" (optional: implement real cookie for persistent login)
             header('Location: dashboard.php');
             exit;
